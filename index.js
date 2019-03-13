@@ -16,8 +16,6 @@ if (!config.get("jwtPrivateKey")) {
   process.exit(1);
 }
 
-//edited here
-
 mongoose
   .connect("mongodb://localhost/car", { useNewUrlParser: true })
   .then(() => console.log("Connected to mongodb"))

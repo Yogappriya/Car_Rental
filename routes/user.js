@@ -4,8 +4,9 @@ const mongoose = require("mongoose");
 const { user, validate } = require("../models/user");
 const _ = require("lodash");
 const bcrypt = require("bcrypt");
+const auth = require("../middleware/auth");
 
-router.post("/", async (req, res) => {
+router.post("/", auth, async (req, res) => {
   const { error } = validate(req.body);
   if (error) {
     return res.status(404).send(error.details[0].message);
@@ -20,7 +21,9 @@ router.post("/", async (req, res) => {
   u.password = await bcrypt.hash(u.password, salt);
   await u.save();
 
-  res.send(_.pick(u, ["name", "email", "id"]));
+  const token = u.generateAuthToken();
+
+  res.header("x-auth-token", token).send(_.pick(u, ["name", "email", "id"]));
 });
 
 module.exports = router;

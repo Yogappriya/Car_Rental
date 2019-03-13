@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
 const { customer, validate } = require("../models/customer");
+const auth = require("../middleware/auth");
 
 router.get("/", async (req, res) => {
   res.send(await customer.find().sort({ name: 1 }));
@@ -16,7 +17,7 @@ router.get("/:phone", async (req, res) => {
   res.send(c);
 });
 
-router.post("/", async (req, res) => {
+router.post("/", auth, async (req, res) => {
   const { error } = validate(req.body);
   if (error) {
     return res.status(400).send(error.details[0].message);

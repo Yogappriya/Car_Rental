@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { model, validate } = require("../models/model");
+const auth = require("../middleware/auth");
 
 router.get("/", async (req, res) => {
   res.send(await model.find());
@@ -12,7 +13,7 @@ router.get("/:name", async (req, res) => {
   res.send(m);
 });
 
-router.post("/", async (req, res) => {
+router.post("/", auth, async (req, res) => {
   const { error } = validate(req.body);
   if (error) {
     return res.status(400).send(error.details[0].message);
