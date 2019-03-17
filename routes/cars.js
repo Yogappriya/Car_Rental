@@ -9,20 +9,11 @@ router.get("/", async (req, res) => {
   res.send(await car.find().sort({ name: 1 }));
 });
 
-router.get("/:name", async (req, res) => {
-  const c = await car.find({ name: req.params.name });
-  if (!c) {
-    return res.status(400).send("Car with given name does not exist");
-  }
-  res.send(c);
-});
-
 router.get("/:id", async (req, res) => {
-  const c = await car.find({ _id: req.params.id });
-  if (!c) {
-    return res.status(400).send("Car with given id does not exist");
-  }
-  res.send(c);
+  const Car = await car.findById(req.params.id);
+  if (!Car) return res.status(400).send("Car with given id does not exist");
+
+  res.send(Car);
 });
 
 router.post("/", auth, async (req, res) => {

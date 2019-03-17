@@ -7,7 +7,7 @@ const bcrypt = require("bcrypt");
 const Joi = require("joi");
 const auth = require("../middleware/auth");
 
-router.post("/", auth, async (req, res) => {
+router.post("/", async (req, res) => {
   const { error } = validate(req.body);
   if (error) {
     return res.status(400).send(error.details[0].message);

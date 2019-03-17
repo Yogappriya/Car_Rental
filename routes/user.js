@@ -6,7 +6,12 @@ const _ = require("lodash");
 const bcrypt = require("bcrypt");
 const auth = require("../middleware/auth");
 
-router.post("/", auth, async (req, res) => {
+router.get("/me", auth, async (req, res) => {
+  const u = await user.findById(req.user._id).select("-password");
+  res.send(u);
+});
+
+router.post("/", async (req, res) => {
   const { error } = validate(req.body);
   if (error) {
     return res.status(404).send(error.details[0].message);

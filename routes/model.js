@@ -2,13 +2,14 @@ const express = require("express");
 const router = express.Router();
 const { model, validate } = require("../models/model");
 const auth = require("../middleware/auth");
+const admin = require("../middleware/admin");
 
 router.get("/", async (req, res) => {
   res.send(await model.find());
 });
 
-router.get("/:name", async (req, res) => {
-  const m = await model.find({ name: req.params.name });
+router.get("/:id", async (req, res) => {
+  const m = await model.findById(req.params.id);
   if (!m) return res.status(400).send("Model not found");
   res.send(m);
 });
@@ -37,8 +38,8 @@ router.put("/:name", async (req, res) => {
   );
 });
 
-router.delete("/:name", async (req, res) => {
-  res.send(await model.remove({ name: req.params.name }));
+router.delete("/:name", [auth, admin], async (req, res) => {
+  res.send(await model.deleteOne({ name: req.params.name }));
 });
 
 module.exports = router;

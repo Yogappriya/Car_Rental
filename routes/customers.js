@@ -8,12 +8,11 @@ router.get("/", async (req, res) => {
   res.send(await customer.find().sort({ name: 1 }));
 });
 
-router.get("/:phone", async (req, res) => {
-  const c = await customer.find({ phone: req.params.phone });
-  if (!c)
-    return res
-      .status(400)
-      .send("Customer with the given phone number not found");
+router.get("/:id", async (req, res) => {
+  const c = await customer.findById(req.params.id);
+  if (!c) {
+    return res.status(400).send("Customer with the given id not found");
+  }
   res.send(c);
 });
 
