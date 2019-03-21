@@ -12,7 +12,6 @@ router.post("/", async (req, res) => {
   if (error) {
     return res.status(400).send(error.details[0].message);
   }
-
   let u = await user.findOne({ email: req.body.email });
   if (!u) return res.status(400).send("Invalid email/password");
 

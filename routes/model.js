@@ -3,14 +3,15 @@ const router = express.Router();
 const { model, validate } = require("../models/model");
 const auth = require("../middleware/auth");
 const admin = require("../middleware/admin");
+const validateObjectId = require("../middleware/validateObjectId");
 
 router.get("/", async (req, res) => {
   res.send(await model.find());
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", validateObjectId, async (req, res) => {
   const m = await model.findById(req.params.id);
-  if (!m) return res.status(400).send("Model not found");
+  if (!m) return res.status(404).send("Model not found");
   res.send(m);
 });
 

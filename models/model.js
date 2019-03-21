@@ -5,7 +5,7 @@ const modelSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-    minlength: 3,
+    minlength: 5,
     maxlength: 20
   }
 });
@@ -14,7 +14,8 @@ const model = new mongoose.model("model", modelSchema);
 function validateModel(model) {
   const schema = {
     name: Joi.string()
-      .min(3)
+      .min(5)
+      .max(20)
       .required()
   };
   return Joi.validate(model, schema);

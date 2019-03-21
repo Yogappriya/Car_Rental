@@ -2,11 +2,11 @@ const express = require("express");
 const app = express();
 const winston = require("winston");
 
-require("./startup/logging");
+require("./startup/logging")();
 require("./startup/routes")(app);
 require("./startup/db")();
-require("./startup/config");
-require("./startup/validation");
+require("./startup/config")();
+require("./startup/validation")();
 
 const logger = winston.createLogger({
   transports: [
@@ -16,6 +16,8 @@ const logger = winston.createLogger({
 });
 
 const port = process.env.PORT || 3001;
-app.listen(port, () => {
+const server = app.listen(port, () => {
   logger.info(`listening in port${port}`);
 });
+
+module.exports = server;

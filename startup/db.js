@@ -1,5 +1,6 @@
 const winston = require("winston");
 const mongoose = require("mongoose");
+const config = require("config");
 
 const logger = winston.createLogger({
   transports: [
@@ -9,9 +10,10 @@ const logger = winston.createLogger({
 });
 
 module.exports = function() {
+  const db = config.get("db");
   mongoose
-    .connect("mongodb://localhost/car", { useNewUrlParser: true })
-    .then(() => logger.info("Connected to mongodb"));
+    .connect(config.get("db"), { useNewUrlParser: true })
+    .then(() => logger.info(`Connected to ${db}`));
 
   mongoose.set("useCreateIndex", true);
 };
